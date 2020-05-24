@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mechanism name="Aluminum Combustion" units="CGS">
+    <component id="Aluminum dioxide">
+      <description>Aluminum dioxide</description>
+      <density>4.26</density>
+      <molwt>58.98</molwt>
+    </component>
+    
+    <particle id="AlO2" model="spherical" subtree="false">
+      <description>aluminum particle.</description>
+      <fractdim>1.8</fractdim>
+      <coalthresh>1.0</coalthresh>
+      <sintering enable="false" model="rutile">
+          <A units="s/m4K">3.7E16</A>
+          <E units="K">31032</E>
+          <Dpmin units="m">3.4e-9</Dpmin>
+      </sintering>
+    </particle>
+    
+    
+    <coagulation>
+        <A>0.0</A>
+        <kernel>transition</kernel>
+    </coagulation>
+</mechanism>
