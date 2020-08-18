@@ -39,7 +39,7 @@
     Email:       mk306@cam.ac.uk
     Website:     http://como.cheng.cam.ac.uk
 */
-
+#include "swp_aluminum_surface_reaction.h"
 #include "swp_mech_parser.h"
 #include "swp_component.h"
 #include "swp_tracker.h"
@@ -1243,6 +1243,9 @@ void MechParser::readSurfRxns(CamXML::Document &xml, Mechanism &mech)
                 throw runtime_error("Unrecognised titania reaction form" + str2 +
                         "in MechParser::readSurfRxns");
             }
+		// add Al mass diffusion and cap influence.       
+        } else if (str.compare("aluminum")==0){
+        	rxn = new AlMassDiffusion(mech);
         } else {
             // Unrecognised reaction type.
             throw runtime_error("Unrecognised reaction type: " + str +
