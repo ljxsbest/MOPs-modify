@@ -1,10 +1,10 @@
-#include "swp_aluminum_surface_reaction.h"
+#include "swp_aluminum_mass_diffusion.h"
 #include "swp_mechanism.h"
 
 namespace Sweep {
 namespace Processes {
 
-// Default constructor (private): 初始化列表？？？
+// Default constructor (private)
 AlMassDiffusion::AlMassDiffusion()
 :SurfaceReaction(),
 	m_i_AL(0u),
@@ -28,9 +28,9 @@ void AlMassDiffusion::init(const Sprog::SpeciesPtrVector &sp)
 	//Loop over species to find AL and AL2O3
 	for (unsigned int i = 0; i !=sp.size(); ++i)
 	{
-		if (sp[i]->Name() == "AL")
+		if ((sp[i]->Name() == "AL(l)") || (sp[i]->Name() == "AL(L)"))
 			m_i_AL = i;
-		if (sp[i]->Name() == "AL2O3")
+		if (sp[i]->Name() == "AL2O3") 
 			m_i_AL2O3 = i;
 	}
 
@@ -71,18 +71,65 @@ AlMassDiffusion *const AlMassDiffusion::Clone() const
 	return new AlMassDiffusion(*this);
 }
 
-//Return the process type
-ProcessType AlMassDiffusion::ID() const {return AluminumSR_ID;}
+// return the process type
+ProcessType AlMassDiffusion::ID() const { return AluminumSR_ID; }
 
-//returns the rate of the process for the given system 
+// calculate the coverage fraction of Oxide cap.Casper
+// we assume that the centre of cap is on the surface of Al particle.
+double AlMassDiffusion::CalcCoverFrac(const Cell &sys) const
+{
+	//the molar mass of Al and Al2O3: 27 and 102.
+	//the density of liquid Al and alpha Al2O3 are 2.377 g/cm3 and 3.9 g/cm3.
+	double r_cap(1.0);
+	double r_Al(1.0);
+	//volume of Al and cap particle.
+	double V_Al = sys.GasPhase().SpeciesConcentration(m_i_AL) /
+		(2.377 * 27);
+	double V_cap = sys.GasPhase().SpeciesConcentration(m_i_AL2O3) /
+		(3.9 * 102);
+	r_Al = pow(3 * V_Al / (4 * PI), 1 / 3);
+	r_cap = pow(3 * V_cap / (4 * PI), 1 / 3);
+	// the distance of centre of mass between two particles. 
+	double gap = 1 - 0.5 * pow(r_cap / r_Al, 2);
+	// free surface area of Al particle
+	double Area_Al = 2 * PI * r_Al * (r_Al + gap);
+	// 1 - the ratio of free SA and total SA. 
+	double m_fraction = 1 - Area_Al / (4 * PI * pow(r_Al, 2));
+	if (m_fraction > 0.5){
+		m_fraction = 0.5; //should we define "georatio" here??
+	}
+	else if (m_fraction <= 0.5){
+		m_fraction *= 1;
+	}
+	else{
+		cout << "error Georetio";
+	}
+	return m_fraction;
+}
+// returns the rate of the process for the given system 
 //（single particle?）
 double AlMassDiffusion::Rate(double t, const Cell &sys, const Particle &sp) const
 {
-	double rate(1.0); //
+	double rate(1.0); 
 
 	//double T = gas.Temperature();
-	double k1 = 1.0e14; // constant diffusion rate.
-	rate = k1*sqrt(sys.GasPhase().SpeciesConcentration(m_i_AL));
+	double k1 = 1.0e14; //?????? needed to be verified.
+	rate = k1*sys.GasPhase().SpeciesConcentration(m_i_AL);
+
+	//ratio by geometric model
+	//the density of liquid Al and alpha Al2O3 are 2.377 g/cm3 and 3.9 g/cm3.
+	double ratio1(0);
+	//double T = gas.Temperature();
+	double k1 = 1.0e14; //?????? needed to be verified.
+	rate = k1 * sys.GasPhase().SpeciesConcentration(m_i_AL);
+	rate *= 1 - CalcCoverFrac(sys);
+	//choose mechanism based on temperature
+	if (sys.GasPhase().Temperature() >= 2700){
+		rate *= 1;
+	}
+	else {
+		rate = 0;
+	}
 	return rate;
 }
 

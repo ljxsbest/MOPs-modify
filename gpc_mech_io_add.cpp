@@ -83,6 +83,7 @@ void MechanismParser::ReadChemkin
 	const std::string &Surfthermofile,
     const int verbose,
     const std::string &transFile
+    const 
     )
 {
     // member function added by vniod to enable the reading of transport data.
@@ -229,7 +230,11 @@ void MechanismParser::ReadChemkin(
             rxn->AddProduct(iter->first, iter->second);
         }
 
-		
+		//先做一个test
+        if (gas.Temperature() > 0)
+        {
+        	cout << "test works";
+        }
 		
         rxn->SetArrhenius
             (
@@ -255,6 +260,7 @@ void MechanismParser::ReadChemkin(
                 );
         }
 
+        
 
 
         rxn->SetUseThirdBody(chemkinReader.reactions()[i].hasThirdBody());

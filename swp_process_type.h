@@ -68,12 +68,16 @@ namespace Processes
         ActSiteRxn_ID=101,      // Active-sites surface reaction.
         TitaniaSR_ID=102,       // Titania surface reaction
         AluminumSR_ID=103,      // Aluminum mass diffusion.
+        AlSurfOxidation_ID=104,
 
         // Condensation processes.
         Condensation_ID=200,    // Condensation process.
 
 		// Interparticle processes.
         InterParticle_ID=300,  // Silica interparticle reaction
+
+		// Phase transformation
+		TitaniaPhase_ID = 400,	//Titania anatase to rutile phase transformation
 
         // ARSSC model processes. (no longer used)
         ARSSC_Inception_ID=1000,   // ARS-SC inception process.
@@ -96,6 +100,11 @@ namespace Processes
 
 		//! Transition coagulation with weighted particles
 		Transition_Coagulation_Weighted_PAHs_ID = 10007,
+
+        //! Transition coagulation with hybrid particle-number/particle model
+        Hybrid_Transition_Coagulation_ID = 10008,
+        //! Constant coagulation with hybrid particle-number/particle model
+        Hybrid_Constant_Coagulation_ID = 10009,
 
         // Coagulation processes
         Erosion_Fragmentation_ID=20000,   // Transition regime coagulation

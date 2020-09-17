@@ -1,10 +1,8 @@
 //************************
 // this file is to calculate the mass diffusion rate 
 //and the influence of oxide cap.
-
-
-#ifndef SWP_ALUMINUM_SURFACE_REACTION_H_
-#define SWP_ALUMINUM_SURFACE_REACTION_H_
+#ifndef SWP_ALUMINUM_MASS_DIFFUSION_H_
+#define SWP_ALUMINUM_MASS_DIFFUSION_H_
 
 #include "swp_surface_reaction.h"
 
@@ -33,10 +31,12 @@ public:
 	// return the process type
 	ProcessType ID(void) const;
 
-	//returns rate of the process for the given system
+	double CalcCoverFrac(const Cell &sys) const;
+
+	// returns rate of the process for the given system
 	double Rate(
 		double t, 
-		const Cell &sys, 
+		const Cell &sys,
 		const Particle &sp) const;
 
 	//writes the object to a binary stream.
@@ -54,14 +54,12 @@ private:
 
 	// Initialize indices for gas-phase species.
 	void init(const Sprog::SpeciesPtrVector &sp);
-
+	double m_fraction;
 	// Index of Al and Al2O3 in the gas phase
 	unsigned int m_i_AL;
 	unsigned int m_i_AL2O3;
 
 };
 }
-
 }
-
-#endif // SWP_ALUMINUM_SURFACE_REACTION_H_
+#endif // SWP_ALUMINUM_MASS_DIFFUSION_H_
