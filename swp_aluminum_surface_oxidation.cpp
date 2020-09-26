@@ -1,7 +1,6 @@
 #include "swp_aluminum_surface_oxidation.h"
 #include "swp_mechanism.h"
 
-
 namespace Sweep{
 namespace Processes{
 
@@ -11,7 +10,7 @@ AlSurfOxidation::AlSurfOxidation()
 :SurfaceReaction(),
 	m_i_AL(0u),
 	m_i_AL2O3(0u),
-	m_i_O2(){}
+	m_i_O2(0u){}
 
 //Mechanism Constructor
 AlSurfOxidation::AlSurfOxidation(
@@ -82,7 +81,8 @@ void AlSurfOxidation::init(const Sprog::SpeciesPtrVector &sp)
 
 // return the surface oxidation rate constant, m3.
 double AlSurfOxidation::SurfaceRateConstant(double t,
-										const Cell &sys) const
+										const Cell &sys,
+										const Particle &sp) const
 {  
 	// Boltzmann constant, J/K.
 	double kb = 1.38064825E-23; 
@@ -90,57 +90,99 @@ double AlSurfOxidation::SurfaceRateConstant(double t,
 	double mass_O2 = 0.032 / 6.02214076E+23; 
 	
 	double V = sqrt(8 * kb * 
-			sys.GasPhase().Temperature() / (mass_O2 * 3.141592653)); // m/s
+			sys.GasPhase().Temperature() / (mass_O2 * PI)); // m/s
 	// O2 consume rate constant k1, m3.
 	// where 0.1 is the ratio of reactant O2 and total O2. 
 	// GetTotalDiameter2() = 4*r*r
-	double k1= 0.1 * V * t 
-				* PI * sys.Particles().GetTotalDiameter2(); 
+	double k1= 0.1 * V * t * sp.SurfaceArea(); 
 
 	return k1;
 }
 
-// return O2 consume during t, mol
+// return O2 production/consumpation rate.
 double AlSurfOxidation::O2ConsumeRate(double t,
-										const Cell &sys) const
+										const Cell &sys,
+										const Particle &sp) const
 {
-	double mole_O2Consume = SurfaceRateConstant(t, sys) * 
+	double mole_O2Consume = SurfaceRateConstant(t, sys, sp) * 
 								sys.GasPhase().SpeciesConcentration(m_i_O2);
+    mole_O2Consume *= 1/t;
 
 	return mole_O2Consume; // mol.
 }
 
 //  4/3 Al + O2 = 2/3 Al2O3.
 double AlSurfOxidation::AlConsumeRate(double t,
-										const Cell &sys) const
+										const Cell &sys,
+										const Particle &sp) const
 {
-	double mole_AlConsume = 4 * SurfaceRateConstant(t, sys) * 
+	double mole_AlConsume = 4 * SurfaceRateConstant(t, sys, sp) * 
 								sys.GasPhase().SpeciesConcentration(m_i_O2) / 3;
+	mole_AlConsume *= 1/t;
 	return mole_AlConsume; // mol. 
 }
 
 double AlSurfOxidation::Al2O3ProduceRate(double t,
-										const Cell &sys) const
+										const Cell &sys,
+										const Particle &sp) const
 {
 	double mole_Al2O3Produce = mole_O2Consume * 4 / 3;
+	mole_Al2O3Produce *= 1/t;
 	return mole_Al2O3Produce; // mol.
 }
 
 //Now we get the O2 consume rate, (mol)
 double AlSurfOxidation::Rate(double t,
-							const Cell &sys) const
+							const Cell &sys,
+							const Particle &sp) const
 {
 	double rate(1.0);
 	// default reactor volume:
-	double volume(1.0); // cm3.
 	if (sys.GasPhase().Temperature() < 2700){
 		// IUPAC's definition
-		rate = O2ConsumeRate(t, sys) / (3 * volume * t);
+		rate = O2ConsumeRate(t, sys, sp) / (3 * sp.Volume());
+
 	}
 	else {
 		rate = 0;
 	}
 	return rate;
+}
+
+// calculate the enthalpy:
+// H/RT = a1 + a2*T/2 + a3 * pow(T, 2)/3 + a4 * pow(T, 3)/4 +a5 * pow(T, 4)/5 + a6/T 
+// return molar production rate * enthalpy.
+double AlSurfOxidation::HeatProdRate(double t,
+					 const Cell &sys,
+					 const Particle &sp) const
+{
+	double H_Al(1.0), H_O2(1.0), H_Al2O3(1.0);
+	double rate_heatprod(1.0);
+	H_Al = 3.83089866E+00 - 2.09027129E-05 * sys.GasPhase().Temperature()/2 + 
+		1.04271684E-08 * pow(sys.GasPhase().Temperature(), 2) / 3 -
+		2.04841051E-12 * pow(sys.GasPhase().Temperature(), 3) / 4 +
+		1.39565517E-16 * pow(sys.GasPhase().Temperature(), 4) / 5 -
+		9.97961566E+01 / sys.GasPhase().Temperature();
+
+	H_Al *= R * sys.GasPhase().Temperature();
+
+	H_O2 = 3.45852381E+00 + 1.04045351E-03 * sys.GasPhase().Temperature()/2 - 
+		2.79664041E-07 * pow(sys.GasPhase().Temperature(), 2) / 3 +
+		3.11439672E-11 * pow(sys.GasPhase().Temperature(), 3) / 4 -
+		8.55656058E-16 * pow(sys.GasPhase().Temperature(), 4) / 5 +
+		1.02229063E+04 / sys.GasPhase().Temperature();
+
+	H_O2 *= R * sys.GasPhase().Temperature();
+
+	H_Al2O3 = 1.95922550E+01 - 1.02229063E+04 / sys.GasPhase().Temperature();
+	H_Al2O3 *= R * sys.GasPhase().Temperature();
+    
+    // calculate the heat production rate, J/s
+    rate_heatprod = H_Al2O3 * Al2O3ProduceRate(t, sys, sp) -
+    					H_Al * AlConsumeRate(t, sys, sp) -
+    					H_O2 * O2ConsumeRate(t, sys, sp);
+
+    return rate_heatprod;
 }
 
 //Write the object to a binary stream.

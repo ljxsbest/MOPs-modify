@@ -150,7 +150,7 @@ ParticleProcess *const ProcessFactory::ReadPartProcess(std::istream &in,
 				return new AlMassDiffusion(in, mech);
 			case AlSurfOxidation_ID:
 				return new AlSurfOxidation(in, mech);
-
+		
             default:
                 throw runtime_error("Invalid particle process type read from "
                                     "input stream (Sweep, "
@@ -248,6 +248,7 @@ Fragmentation *const ProcessFactory::ReadFrag(std::istream &in,
             case Weighted_Symmetric_Fragmentation_ID:
                 proc = new WeightedSymmetricFragmentation(in, mech);
                 break;
+			
             default:
                 throw runtime_error("Invalid fragmentation type read from "
                                     "input stream (Sweep, "

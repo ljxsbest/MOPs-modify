@@ -33,7 +33,13 @@ public:
 
 	double CalcCoverFrac(const Cell &sys) const;
 
-	// returns rate of the process for the given system
+	// return the rate of the process for the given system.
+	double Rate(
+		double t,
+		const Cell &sys,
+		const Geometry::LocalGeometry1d &local_geom) const;
+   
+	// returns rate of the process for the given particle.
 	double Rate(
 		double t, 
 		const Cell &sys,

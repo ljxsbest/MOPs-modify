@@ -9,6 +9,7 @@ where v is calculated by Boltzmann equation.
 #define SWP_ALUMINUM_SURFACE_OXIDATION_H_
 
 #include "swp_surface_reaction.h"
+#include "swp_primary.h"
 
 namespace Sweep{
 namespace Processes{
@@ -36,15 +37,24 @@ public:
 	ProcessType ID(void) const;
 
 	double SurfaceRateConstant(double t,
-							const Cell &sys) const;
+							const Cell &sys,
+							const Particle &sp) const;
 	double O2ConsumeRate(double t,
-							const Cell &sys) const;
+							const Cell &sys,
+							const Particle &sp) const;
 	double AlConsumeRate(double t,
-							const Cell &sys) const;
+							const Cell &sys,
+							const Particle &sp) const;
 	double Al2O3ProduceRate(double t,
-							const Cell &sys) const;
+							 const Cell &sys,
+							 const Particle &sp) const;
 
-	double Rate(double t, const Cell &sys) const;
+	double Rate(double t, const Cell &sys, const Particle &sp) const;
+
+	double HeatProdRate(double t,
+					const Cell &sys,
+					const Particle &sp) const;
+
 	//writes the object to a binary stream.
 	void Serialize(std::ostream &out) const;
 
@@ -53,6 +63,11 @@ public:
 		std::istream &in,
 		const Sweep::Mechanism &mech
 		);
+	double k1;
+	double mole_O2Consume;
+	double mole_AlConsume;
+	double mole_Al2O3Produce;
+	double rate_heatprod;
 
 private:
 	// Private default constructor
@@ -61,10 +76,7 @@ private:
 	// Initialize indices for gas-phase species.
 	void init(const Sprog::SpeciesPtrVector &sp);
 
-	double k1;
-	double mole_O2Consume;
-	double mole_AlConsume;
-	double mole_Al2O3Produce;
+
 	unsigned int m_i_AL;
 	unsigned int m_i_AL2O3;
 	unsigned int m_i_O2;

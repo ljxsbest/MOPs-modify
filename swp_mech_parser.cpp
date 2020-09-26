@@ -1352,12 +1352,13 @@ void MechParser::readSurfRxns(CamXML::Document &xml, Mechanism &mech)
                 throw runtime_error("Unrecognised titania reaction form" + str2 +
                         "in MechParser::readSurfRxns");
             }
-        // add Al mass diffusion and cap influence.       
-        } else if (str.compare("aluminum")==0){
-            rxn = new AlMassDiffusion(mech);
+       
         // add Al surface oxidation.       
         } else if (str.compare("AlSurfOxidation")==0){
             rxn = new AlSurfOxidation(mech);
+		// add Al mass diffusion and cap influence.       
+		} else if (str.compare("aluminum") == 0){
+			rxn = new AlMassDiffusion(mech);
 
 
         } else {

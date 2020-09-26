@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mops version="2">
-  <runs>3</runs>
+  <runs>1</runs>
   <atol>1.0e-17</atol> 
   <rtol>1.0e-4</rtol>
-  <pcount>1</pcount>
-  <maxm0>1.0e14</maxm0>
-  
-  <reactor type="batch" constt="true" constv="false" id="Test_System" units="mol/mol">
-    <temperature units="K">2350</temperature>
+  <pcount>512</pcount>
+  <maxm0>1.0e20</maxm0>
+  <!-- All explanations could be found in mops_settings_io.cpp --> 
+  <reactor type="batch" constt="false" constv="true" id="Test_System" units="mol/mol">
+	<!-- constt: true means const temperature; false means adiabatic -->
+	<!-- we can add includeParticleTerm here. ALL depends -->
+    <temperature units="K">2000</temperature>
     <pressure units="bar">4.00</pressure>
-    <component id="AL">0.01</component>
-    <component id="O2">0.99</component>  
+    <component id="AL(L)">0.1</component>
+    <component id="O2">0.9</component>  
     <population>
-        <m0>1.0e15</m0>
-        <particle count="1">
-            <weight>1.0</weight>
-            <component id="Aluminum dioxide" dx="100"/>
+        <m0>1.0e20</m0>
+        <particle count="512">
+            <weight>2.0</weight>
+            <component id="aluminum" dx="+200000000000000"/>
         </particle>
     </population>
   </reactor>
 
   <timeintervals>
     <start>0.0</start>
-    <time steps="20" splits="4">0.01</time>
+    <time steps="500" splits="4">0.002</time>
   </timeintervals>
   
   <output>
@@ -36,7 +38,7 @@
       <tabular>
         <column fmt="sci">time</column>
         <column fmt="float">#sp</column>
-        <column fmt="sci">Al2O3</column>
+        <column fmt="sci">Al</column>
         <column fmt="sci">O2</column>
         <column fmt="sci">M0</column>
         <column fmt="sci">T</column>

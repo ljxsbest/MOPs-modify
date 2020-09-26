@@ -106,22 +106,18 @@ double AlMassDiffusion::CalcCoverFrac(const Cell &sys) const
 	}
 	return m_fraction;
 }
-// returns the rate of the process for the given system 
-//（single particle?）
-double AlMassDiffusion::Rate(double t, const Cell &sys, const Particle &sp) const
+
+// return the rate of the process for the given system.
+double AlMassDiffusion::Rate(
+	double t,
+	const Cell &sys,
+	const Geometry::LocalGeometry1d &local_geom) const
 {
-	double rate(1.0); 
+	double rate(1.0);
 
 	//double T = gas.Temperature();
-	double k1 = 1.0e14; //?????? needed to be verified.
+	double k1 = 1.0e8 ; //?????? needed to be verified.
 	rate = k1*sys.GasPhase().SpeciesConcentration(m_i_AL);
-
-	//ratio by geometric model
-	//the density of liquid Al and alpha Al2O3 are 2.377 g/cm3 and 3.9 g/cm3.
-	double ratio1(0);
-	//double T = gas.Temperature();
-	double k1 = 1.0e14; //?????? needed to be verified.
-	rate = k1 * sys.GasPhase().SpeciesConcentration(m_i_AL);
 	rate *= 1 - CalcCoverFrac(sys);
 	//choose mechanism based on temperature
 	if (sys.GasPhase().Temperature() >= 2700){
@@ -129,6 +125,27 @@ double AlMassDiffusion::Rate(double t, const Cell &sys, const Particle &sp) cons
 	}
 	else {
 		rate = 0;
+	}
+	return rate;
+}
+
+
+// returns the rate of the process for the single particle. 
+//（single particle?）
+double AlMassDiffusion::Rate(double t, const Cell &sys, const Particle &sp) const
+{
+	double rate(1.0); 
+
+	//double T = gas.Temperature();
+	double k1 = 1.0e8; //?????? needed to be verified.
+	rate = k1*sys.GasPhase().SpeciesConcentration(m_i_AL);
+	rate *= 1 - CalcCoverFrac(sys);
+	//choose mechanism based on temperature
+	if (sys.GasPhase().Temperature() >= 2700){
+		rate *= 1;
+	}
+	else {
+		rate *= 0.1;
 	}
 	return rate;
 }

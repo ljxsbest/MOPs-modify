@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<mechanism name="Aluminum Combustion" units="CGS">
-    <component id="Aluminum dioxide">
-      <description>Aluminum dioxide</description>
-      <density>4.26</density>
-      <molwt>58.98</molwt>
+<mechanism name="Aluminum Dioxide" units="CGS">
+	<!-- density of Al2O3. -->
+	<component id="aluminum">
+      <description>aluminum</description>
+      <density>3.9</density>
+      <molwt>27.00</molwt>
     </component>
-    
-    <particle id="AlO2" model="spherical" subtree="false">
+	
+    <particle id="[AL]" model="spherical" subtree="false">
       <description>aluminum particle.</description>
       <fractdim>1.8</fractdim>
       <coalthresh>1.0</coalthresh>
-      <sintering enable="false" model="rutile">
-          <A units="s/m4K">3.7E16</A>
-          <E units="K">31032</E>
-          <Dpmin units="m">3.4e-9</Dpmin>
-      </sintering>
     </particle>
-    
-    
+	
     <coagulation>
         <A>0.0</A>
         <kernel>transition</kernel>
     </coagulation>
+	
+	<reaction type="aluminum" defer="true">
+        <formula>AL(l) to AL</formula>
+        <reactant id="AL(L)" stoich="1.0" />
+        <product id="AL" stoich="1.0" />
+		<A units="cm3/s">0</A>
+        <n>0.0</n>
+        <E units="cal">0</E> <!-- kcal/mol -->
+        <particleterm id="s" power="1.0"/>
+		<component id="aluminum" dx="-15000000000.0"/>
+		<!-- can add an component -->
+	</reaction>
+	
 </mechanism>
-
