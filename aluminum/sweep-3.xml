@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mechanism name="Aluminum Dioxide" units="CGS">
+
+    <component id="AL2O3">
+      <description>Aluminum dioxide</description>
+      <density>2.90</density>
+      <molwt>101.96</molwt>
+    </component>
+	
+    <particle id="AL2O3" model="spherical" subtree="false">
+      <description>aluminum particle.</description>
+      <fractdim>1.8</fractdim>
+      <coalthresh>1.0</coalthresh>
+      <sintering enable="false" model="constant">
+          <A units="s/m4K">3.7E-15</A>
+          <E units="K">10.2E4</E>
+          <Dpmin units="m">10.2E-9</Dpmin>
+      </sintering>
+    </particle>
+	
+    <coagulation>
+        <A>0.0</A>
+        <kernel>transition</kernel>
+    </coagulation>
+	
+	<reaction type="titania" name="surface rxn for Al" form="firstorder" defer="true">
+		<formula>2.0 AL2O3 to 4.0 ALO + 1.0 O2</formula>
+        <reactant id="AL2O3" stoich="2.0" />
+        <product id="ALO"  stoich="4.0" />
+        <product id="O2" stoich="1.0" />
+        <A units="cm m3/mol2 s">1.2044e+028</A>
+        <n>0.0</n>
+        <E units="cal">11.9503</E> 
+		<!-- kcal/mol -->
+		<!-- A,n,E needed to be changed. -->
+        <particleterm id="s" power="1.0"/>
+        <component id="AL2O3" dx="+1.0"/>
+    </reaction>   
+</mechanism>

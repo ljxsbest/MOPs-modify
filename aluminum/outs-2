@@ -1,0 +1,69 @@
+Using the following files for input:
+  main: mops.inx
+  chem: chem.inp
+  therm: therm.dat
+  sweep: sweep-2.xml
+Checking the format of the chem.inp file.
+chem.inp file format check PASSED.
+Global Units Read
+Units for gas reaction NO GLOBAL UNITS
+elements read
+species read
+Parsing NASA thermo file: THERM.DAT
+Parsing NASA thermo file: NOT READ
+Unmatched :  200.001  1000.000 6000.00
+O                 L 1/90O   1    0    0    0G   200.000  6000.000 1000.        1
+O2 SINGLET        ATCT06O  2.   0.   0.   0.G   200.000  6000.000 1000.        1
+AL                G12/97AL 1.   0.   0.   0.G   200.000  6000.000 1000.        1
+ALO               TPIS96AL 1.O  1.   0.   0.G   200.000  6000.000 1000.        1
+ALO2              TPIS96AL 1.O  2.   0.   0.G   200.000  6000.000 1000.        1
+AL2O2             TPIS96AL 2.O  2.   0.   0.G   200.000  6000.000 1000.        1
+AL2O3             TPIS96AL 2.O  3.   0.   0.G   200.000  6000.000 1000.        1
+Unmatched : ! THERE ARE SEVERAL FORMS OF AL2O3 TO CHOOSE FROM GARFIELD.CHEM.ELTE.HU
+AL2O              TPIS96AL 2.O  1.   0.   0.G   200.000  6000.000 1000.        1
+End of Parsing NASA thermo file: THERM.DAT
+AL + O2 = ALO + O 		9.76E+13	0		158.9744
+Next = ALO + O2 = ALO2 + O		4.63E+14	0		19887.69744
+ALO + O2 = ALO2 + O		4.63E+14	0		19887.69744
+Next = ALO + O + M = ALO2 + M		1.15E+13	2		2445.837041
+ALO + O + M = ALO2 + M		1.15E+13	2		2445.837041
+Next = ALO + ALO + M = AL2O2 + M	4.20E+11	2		-10063.43721
+ALO + ALO + M = AL2O2 + M	4.20E+11	2		-10063.43721
+Next = ALO + ALO2 + M = AL2O3 + M	1.72E+21	2		-6552.249127
+ALO + ALO2 + M = AL2O3 + M	1.72E+21	2		-6552.249127
+Next = ALO + M = AL + O + M		3.91E+21	-2		108702.2037
+ALO + M = AL + O + M		3.91E+21	-2		108702.2037
+Next = ALO + AL + M = AL2O + M		1.31E+12	2		1572.538996
+ALO + AL + M = AL2O + M		1.31E+12	2		1572.538996
+Next = AL2O2 + O + M = AL2O3 + M	4.67E+20	2		5852.002664
+AL2O2 + O + M = AL2O3 + M	4.67E+20	2		5852.002664
+Next = AL2O2 + M = ALO + ALO + M	8.20E+16	1		117940.3651
+AL2O2 + M = ALO + ALO + M	8.20E+16	1		117940.3651
+Next = AL2O2 + M = AL2O + O + M	8.20E+16	1		104285.6961
+AL2O2 + M = AL2O + O + M	8.20E+16	1		104285.6961
+Next = AL2O2 + M = AL + ALO2 + M	8.20E+16	1		148950.9647
+AL2O2 + M = AL + ALO2 + M	8.20E+16	1		148950.9647
+Next = ALO2 + M = ALO + O + M		8.20E+16	1		88579.30363
+ALO2 + M = ALO + O + M		8.20E+16	1		88579.30363
+Next = ALO + O = ALO + O2		3.79E+11	0.5		-10500.25912
+ALO + O = ALO + O2		3.79E+11	0.5		-10500.25912
+Next = ALO2 + AL + M = AL2O2 + M	2.27E+11	2		-14574.99158
+ALO2 + AL + M = AL2O2 + M	2.27E+11	2		-14574.99158
+Next = AL2O + O + M = AL2O2 + M	2.32E+12	2		-14494.96784
+AL2O + O + M = AL2O2 + M	2.32E+12	2		-14494.96784
+Next = AL2O + M = ALO + AL + M		8.20E+16	1		133245.6055
+AL2O + M = ALO + AL + M		8.20E+16	1		133245.6055
+Next = AL2O3 + M = AL2O2 + O + M	2.46E+17	1		97683.4297
+AL2O3 + M = AL2O2 + O + M	2.46E+17	1		97683.4297
+Next = AL2O3 + M = ALO + ALO2 + M	2.46E+17	1		127043.4777
+AL2O3 + M = ALO + ALO2 + M	2.46E+17	1		127043.4777
+reaction read, size all: 18
+Number of reactions18
+phasenamegas
+|------------|------------|------------|------------|------------|------------|
+|   Time (s) |        #SP |         AL | O2 (mol/m3 |   M0 (m-3) |      T (K) |
+|------------|------------|------------|------------|------------|------------|
+mops: Run number 1 of 2.
+|------------|------------|------------|------------|------------|------------|
+|  0.000e+00 |  1.280e+02 |  9.622e-01 |  3.849e+00 |  1.000e+15 |  2.500e+03 |
+sweep: Ensemble contracting too often; possible stiffness issue.

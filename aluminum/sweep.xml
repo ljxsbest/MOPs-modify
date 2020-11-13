@@ -3,7 +3,7 @@
 	<!-- density of Al2O3. -->
 	<component id="aluminum">
       <description>aluminum</description>
-      <density>3.9</density>
+      <density>2.377</density>
       <molwt>27.00</molwt>
     </component>
 	
@@ -18,6 +18,19 @@
         <kernel>transition</kernel>
     </coagulation>
 	
+	<reaction type="AlSurfOxidation" defer="true">
+        <formula>4AL(l) + 3O2 to 2AL2O3(L)</formula>
+        <reactant id="AL(L)" stoich="4.0" />
+		<reactant id="O2" stoich="3.0" />
+        <product id="AL2O3(L)" stoich="2.0" />
+		<A units="cm3/s">1.2044e+01</A>
+        <n>0.0</n>
+        <E units="cal">0</E> <!-- kcal/mol -->
+        <particleterm id="s" power="1.0"/>
+		<component id="aluminum" dx="-4.0"/>
+		<!-- can add an component -->
+	</reaction>
+	
 	<reaction type="aluminum" defer="true">
         <formula>AL(l) to AL</formula>
         <reactant id="AL(L)" stoich="1.0" />
@@ -26,8 +39,7 @@
         <n>0.0</n>
         <E units="cal">0</E> <!-- kcal/mol -->
         <particleterm id="s" power="1.0"/>
-		<component id="aluminum" dx="-15000000000.0"/>
+		<component id="aluminum" dx="-1.0"/>
 		<!-- can add an component -->
 	</reaction>
-	
 </mechanism>

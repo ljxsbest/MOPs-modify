@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mechanism name="Aluminum Dioxide" units="CGS">
+	<!-- density of Al2O3. -->
+	<component id="aluminum">
+      <description>aluminum</description>
+      <density>3.9</density>
+      <molwt>27.00</molwt>
+    </component>
+	<component id="oxygen">
+      <description>oxygen</description>
+      <density>3.9</density>
+      <molwt>16.00</molwt>
+    </component>
+	
+    <particle id="[AL]" model="spherical" subtree="false">
+      <description>aluminum particle.</description>
+      <fractdim>1.8</fractdim>
+      <coalthresh>1.0</coalthresh>
+    </particle>
+	
+    <coagulation>
+        <A>0.0</A>
+        <kernel>transition</kernel>
+    </coagulation>
+	
+	<reaction type="AlSurfOxidation" defer="true">
+        <formula>4AL(l) + 3O2 to 2AL2O3(L)</formula>
+        <reactant id="AL(L)" stoich="4.0" />
+        <product id="AL2O3(L)" stoich="2.0" />
+		<A units="cm3/s">1.2044e+01</A>
+        <n>0.0</n>
+        <E units="cal">0</E> <!-- kcal/mol -->
+        <particleterm id="s" power="1.0"/>
+		<component id="aluminum" dx="+4.0"/>
+		<component id="oxygen" dx="+6.0"/>
+		<!-- can add an component -->
+	</reaction>
+	
+	<reaction type="aluminum" defer="true">
+        <formula>AL(l) to AL</formula>
+        <reactant id="AL(L)" stoich="1.0" />
+        <product id="AL" stoich="1.0" />
+		<A units="cm3/s">1.2044e+01</A>
+        <n>0.0</n>
+        <E units="cal">0</E> <!-- kcal/mol -->
+        <particleterm id="s" power="1.0"/>
+		<component id="aluminum" dx="+1.0"/>
+		<component id="oxygen" dx="+1.0"/>
+		<!-- can add an component -->
+	</reaction>
+	
+</mechanism>

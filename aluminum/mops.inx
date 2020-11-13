@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <mops version="2">
   <runs>1</runs>
-  <atol>1.0e-17</atol> 
+  <atol>1.0e-17</atol>
   <rtol>1.0e-4</rtol>
-  <pcount>512</pcount>
-  <maxm0>1.0e20</maxm0>
-  <!-- All explanations could be found in mops_settings_io.cpp --> 
-  <reactor type="batch" constt="false" constv="true" id="Test_System" units="mol/mol">
+  <pcount>1</pcount>
+  <maxm0>1.0e12</maxm0>
+  <!-- All explanations could be found in mops_settings_io.cpp -->
+  <reactor type="batch" constt="false" constv="false" includeParticleTerms="true" id="Test_System" units="mol/mol">
 	<!-- constt: true means const temperature; false means adiabatic -->
 	<!-- we can add includeParticleTerm here. ALL depends -->
     <temperature units="K">2000</temperature>
-    <pressure units="bar">4.00</pressure>
-    <component id="AL(L)">0.1</component>
-    <component id="O2">0.9</component>  
+    <pressure units="bar">10.00</pressure>
+    <component id="AL(L)">0.5</component>
+    <component id="O2">0.5</component>
     <population>
-        <m0>1.0e20</m0>
-        <particle count="512">
-            <weight>2.0</weight>
-            <component id="aluminum" dx="+200000000000000"/>
+        <m0>1e13</m0>
+        <particle count="1">
+            <weight>1.0</weight>
+            <component id="aluminum" dx="+27759790040313"/>
         </particle>
     </population>
   </reactor>
 
   <timeintervals>
     <start>0.0</start>
-    <time steps="500" splits="4">0.002</time>
+    <time steps="500" splits="1">0.0005</time>
   </timeintervals>
-  
+
   <output>
     <filename>Z1</filename>
     <statsbound property="dcol">
       <lower>0</lower>
       <upper>1.0e30</upper>
     </statsbound>
-    
+
     <console interval="1" msgs="true">
       <tabular>
         <column fmt="sci">time</column>

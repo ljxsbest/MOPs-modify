@@ -1,0 +1,21 @@
+ELEM 
+  Al
+  O
+END
+
+SPECIES
+  Al
+  O2
+  AlO
+  O
+  AlO2
+  Al2O2
+  Al2O3
+  Al2O
+END
+
+REACTIONS
+
+Al + O2 = AlO + O 		9.76E+13	0		80AlO + O2 = AlO2 + O		4.63E+14	0		10008AlO + O + M = AlO2 + M		1.15E+13	2		1230.808AlO + AlO + M = Al2O2 + M	4.20E+11	2		-5064.18AlO + AlO2 + M = Al2O3 + M	1.72E+11	2		-3297.26AlO + M = Al + O + M		3.91E+21	-2		54701.74AlO + Al + M = Al2O + M		1.31E+12	2		791.342Al2O2 + O + M = Al2O3 + M	4.67E+12	2		2944.878Al2O2 + M = AlO + AlO + M	8.20E+16	1		59350.62Al2O2 + M = Al2O + O + M	8.20E+16	1		52479.24Al2O2 + M = Al + AlO2 + M	8.20E+16	1		74955.95AlO2 + M = AlO + O + M		8.20E+16	1		44575.38AlO + O = AlO + O2		3.79E+11	0.5		-5284AlO2 + Al + M = Al2O2 + M	2.27E+11	2		-7334.51Al2O + O + M = Al2O2 + M	2.32E+12	2		-7294.24Al2O + M = AlO + Al + M		8.20E+16	1		67052.61Al2O3 + M = Al2O2 + O + M	2.46E+17	1		49156.81Al2O3 + M = AlO + AlO2 + M 	2.46E+17	1		63931.54
+
+END

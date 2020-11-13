@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mechanism name="Aluminum Dioxide" units="CGS">
+<!--  CGS(cm,g,s) -->
+    <component id="AL2O3">
+      <description>Aluminum dioxide actually</description>
+      <density>2.90</density>
+      <molwt>101.96</molwt>
+    </component>
+<!-- data from pubchem; 3.97 for solid Al2O3, 2.9 for liquid Al2O3-->
+	<!-- used by readComponents()function,density multiply 1000,convert to --> 
+    <particle id="AL" model="spherical" subtree="false">
+      <description>aluminum particle.</description>
+      <fractdim>1.8</fractdim>
+      <coalthresh>1.0</coalthresh>
+      
+    
+    <!-- several model types for sintering, we use "constant" here for a test. -->
+    <coagulation>
+        <A>0.0</A>
+        <kernel>transition</kernel>
+    </coagulation>
+	
+	<inception name="Dimer inception">
+        <formula>AL2O3 + AL2O3 to [X] </formula>
+        <reactant id="AL2O3" stoich="2" m="1.661e-22" d="0.32e-9"/>
+		<!-- don't know actual value of diameter. -->
+        <component id="AL2O3" dx="+10"/>
+        <A>1.0</A>
+    </inception>
+	
+</mechanism>
+
+
+
